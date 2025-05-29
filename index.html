@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pastelPink: '#FFD1DC',
+                        pastelPurple: '#9B7EBD',
+                        pastelBlue: '#9EC6F3',
+                        pastelYellow: '#FEBA17',
+                        pastelGreen: '#5A827E',
+                        darkPink: '#D48A9E',
+                        darkPurple: '#B28FB5',
+                        darkBlue: '#8AC4B7',
+                        darkYellow: '#E5C98F',
+                        darkGreen: '#9FC895',
+                    },
+                    fontFamily: {
+                        'comic': ['"Comic Neue"', 'cursive'],
+                        'nunito': ['Nunito', 'sans-serif']
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'wobble': 'wobble 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        wobble: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'nunito', sans-serif;
+            transition: background-color 0.5s ease;
+        }
+        
+        .kawaii-btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .kawaii-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .kawaii-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .kawaii-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dark .kawaii-card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dark .kawaii-card:hover {
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .profile-pic {
+            border-radius: 50%;
+            border: 5px solid;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .gallery-img {
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .skill-bar {
+            height: 20px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1.5s ease-in-out;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .active-page {
+            display: block;
+        }
+        
+        .theme-toggle {
+            transition: transform 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+        
+        .floating-stars {
+            position: absolute;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            opacity: 0.7;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .star:nth-child(2n) {
+            animation-delay: 1s;
+        }
+        
+        .star:nth-child(3n) {
+            animation-delay: 2s;
+        }
+    </style>
+</head>
+<body class="bg-pastelPink text-gray-800 dark:bg-gray-900 dark:text-gray-200 min-h-screen">
+
+    <div class="floating-stars w-full h-full overflow-hidden">
+        <div class="star text-pastelPurple text-xl" style="top: 10%; left: 15%;">✦</div>
+        <div class="star text-pastelBlue text-xl" style="top: 25%; left: 85%;">✦</div>
+        <div class="star text-pastelYellow text-xl" style="top: 45%; left: 25%;">✦</div>
+        <div class="star text-pastelGreen text-xl" style="top: 75%; left: 65%;">✦</div>
+        <div class="star text-pastelPink text-xl" style="top: 85%; left: 15%;">✦</div>
+        <div class="star text-pastelPurple text-xl" style="top: 30%; left: 50%;">✦</div>
+    </div>
+
+    <nav class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" onclick="showPage('home')" class="text-2xl font-bold font-comic text-pastelPurple dark:text-darkPurple hover:text-pastelPink dark:hover:text-darkPink transition-colors animate-wobble"> rara's 🌸 </a>
+            
+            <div class="flex items-center space-x-6">
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" onclick="showPage('home')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelPink dark:hover:text-darkPink">Home</a>
+                    <a href="#" onclick="showPage('about')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelPurple dark:hover:text-darkPurple">About Me</a>
+                    <a href="#" onclick="showPage('skills')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelBlue dark:hover:text-darkBlue">Skills</a>
+                    <a href="#" onclick="showPage('achievements')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelYellow dark:hover:text-darkYellow">Achievements</a>
+                    <a href="#" onclick="showPage('contact')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelGreen dark:hover:text-darkGreen">Let's Chat</a>
+                </div>
+                
+                <button id="themeToggle" class="theme-toggle bg-pastelPurple dark:bg-darkPurple text-white p-2 rounded-full w-10 h-10 flex items-center justify-center">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+                
+                <button id="mobileMenuButton" class="md:hidden text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobileMenu" class="hidden md:hidden bg-white/90 dark:bg-gray-800/90 backdrop-blur-md px-4 py-2">
+            <div class="flex flex-col space-y-3">
+                <a href="#" onclick="showPage('home')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelPink dark:hover:text-darkPink">Home</a>
+                <a href="#" onclick="showPage('about')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelPurple dark:hover:text-darkPurple">About Me</a>
+                <a href="#" onclick="showPage('skills')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelBlue dark:hover:text-darkBlue">Skills</a>
+                <a href="#" onclick="showPage('achievements')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelYellow dark:hover:text-darkYellow">Achievements</a>
+                <a href="#" onclick="showPage('contact')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-pastelGreen dark:hover:text-darkGreen">Let's Chat</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Home Page -->
+        <div id="home" class="page active-page">
+            <section class="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
+                <div class="md:w-1/2">
+                    <h1 class="text-4xl md:text-5xl font-bold font-comic text-pastelPurple dark:text-darkPurple mb-4"> Hello! </h1>
+                    <h2 class="text-2xl md:text-3xl font-semibold mb-4">
+                        I'm <span class="text-pastelPurple dark:text-darkPurple">Rara</span>, a 3rd Year BSIT Student!
+                    </h2>
+                    <p class="text-lg mb-6">
+                        Welcome to my kawaii portfolio! I'm passionate about creating cute and functional websites and applications. 
+                        When I’m not coding, you’ll find me watching movies, napping, or trying out new recipes. Let’s make tech a little sweeter together! 🍓✨
+                    </p>
+                        
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="showPage('about')" class="kawaii-btn bg-pastelPurple dark:bg-darkPurple hover:bg-pastelPink dark:hover:bg-darkPink text-white px-6 py-2 rounded-full font-medium">
+                            More About Me
+                        </button>
+                        <button onclick="showPage('contact')" class="kawaii-btn bg-pastelPink dark:bg-darkPink hover:bg-pastelPurple dark:hover:bg-darkPurple text-white px-6 py-2 rounded-full font-medium">
+                            Contact Me
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="icon3.gif" 
+                         alt="Profile Picture" 
+                         class="profile-pic w-64 h-64 md:w-80 md:h-80 object-cover border-pastelPurple dark:border-darkPurple shadow-lg">
+                </div>
+            </section>
+            
+            <section class="mb-12">
+                <h2 class="text-3xl font-bold font-comic text-pastelBlue dark:text-darkBlue mb-6 text-center">Quick Peek About Me</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <h3 class="text-xl font-semibold mb-3 text-pastelYellow dark:text-darkYellow">My Hobbies</h3>
+                        <p class="mb-4">I love watching mystery movies, trying new recipes, and reading books in my free time. I also enjoy playing cozy games, practicing calligraphy, and taking relaxing naps to recharge my creativity.</p>
+                        <div class="flex space-x-4">
+                            <div class="w-20 h-20 rounded-lg overflow-hidden">
+                                <img src="https://imgs.search.brave.com/y_QmykOvUOhgtDpKvunXwvyfRwFphK1KkA3YA7ZKzAM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vU1VkN0R0/b292UnFMQ21TWXRY/cVRORElwbVliRUxF/ODlOV1JTUFdsdTgy/SS9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTl0/WldScC9ZUzVuWlhS/MGVXbHRZV2RsL2N5/NWpiMjB2YVdRdk1U/UXkvTWpNd016YzRN/eTl3YUc5MC9ieTl2/ZG1WeUxYUm9aUzF6/L2FHOTFiR1JsY2kx/MmFXVjMvTFhkdmJX/RnVMWGRsWVhKcC9i/bWN0YUdWaFpIQm9i/MjVsL0xYZGhkR05v/YVc1bkxXMXYvZG1s/bExYWnBaR1Z2TFc5/dS9MV1JsYldGdVpD/MXZiaTFzL1lYQjBi/M0F0YVc0dWFuQm4v/UDNNOU5qRXllRFl4/TWlaMy9QVEFtYXow/eU1DWmpQV2R2L1FV/cE5ZVWxwWlV0WFl6/aFIvZERaWVpEaHRi/WEozT0cxbS9OMDk2/YmpOdFpUZzRNV2hU/L1ZtMDVjMUU5" 
+                                     alt="Watching" class="w-full h-full object-cover">
+                            </div>
+                            <div class="w-20 h-20 rounded-lg overflow-hidden">
+                                <img src="https://imgs.search.brave.com/ekEKDcBkepizGMCrC4kv3-ixDBpsUfBal27fNh-6skQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vaUlUaEhw/ZnRTTDd6c0RVSTJ2/LVpXT3E5WExvZmVf/NDREX0hGdnhoWk85/RS9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTkw/TkM1bS9kR05rYmk1/dVpYUXZhbkJuL0x6/QXlMemN6THprekx6/SXovTHpNMk1GOUdY/ekkzTXprei9Nak01/Tmw5R2FVVjBSM0Jy/L1UzRjZZVmxwWkc1/dWFUVk0vZDB0T09H/NWliekI1TldGRi9R/aTVxY0dj" 
+                                     alt="Cooking" class="w-full h-full object-cover">
+                            </div>
+                            <div class="w-20 h-20 rounded-lg overflow-hidden">
+                                <img src="https://imgs.search.brave.com/kWqvVPxNCavrXPtn-kF-aJeK01LbbLPi3fndX1laijI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vdEZqME96/bXo2Ukl5WjI1QWtK/SlJtYmZrb2JNZG9S/dlo1SEMwSWg2TjZq/by9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTl0/WldScC9ZUzVwYzNS/dlkydHdhRzkwL2J5/NWpiMjB2YVdRdk1U/azEvTnpZeE1qTXhN/eTl3YUc5MC9ieTkw/WldWdVlXZGxMV2Rw/L2Ntd3RjMmwwZEds/dVp5MXYvYmkxM2FX/NWtiM2R6YVd4cy9M/V0Z1WkMxeVpXRmth/VzVuL0xXRXRZbTl2/YXk1cWNHY18vY3ow/Mk1USjROakV5Sm5j/OS9NQ1pyUFRJd0pt/TTlOV1ptL1kwOVFX/VVZ0WkZCZmNqQjUv/Y2pCblVHeGlYMjUx/Vm1ScC9jRVZrWjBk/ZlUzSjBZV1ZYL1gw/RkpSVDA" 
+                                     alt="Reading" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <h3 class="text-xl font-semibold mb-3 text-pastelPurple dark:text-darkPurple">My Studies</h3>
+                        <p class="mb-4">I am a third-year Bachelor of Science in Information Technology (BSIT) student, currently focusing on web development, mobile app development, and UI/UX design. I’m passionate about building user-friendly digital experiences and love creating interfaces that are not only functional but also visually appealing and cute. Exploring creative design solutions and bringing ideas to life through code truly excites me!</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-pastelPink dark:bg-darkPink"></span>
+                            <span class="w-3 h-3 rounded-full bg-pastelPurple dark:bg-darkPurple"></span>
+                            <span class="w-3 h-3 rounded-full bg-pastelBlue dark:bg-darkBlue"></span>
+                            <span class="w-3 h-3 rounded-full bg-pastelYellow dark:bg-darkYellow"></span>
+                            <span class="w-3 h-3 rounded-full bg-pastelGreen dark:bg-darkGreen"></span>
+                            <span class="text-sm ml-2">Currently learning: Android Studio</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="text-center">
+                <h2 class="text-3xl font-bold font-comic text-pastelPurple dark:text-darkPurple mb-6">Want to see more?</h2>
+                <div class="flex justify-center space-x-4">
+                    <button onclick="showPage('skills')" class="kawaii-btn bg-pastelBlue dark:bg-darkBlue hover:bg-pastelGreen dark:hover:bg-darkGreen text-white px-6 py-2 rounded-full font-medium">
+                        My Skills
+                    </button>
+                    <button onclick="showPage('achievements')" class="kawaii-btn bg-pastelYellow dark:bg-darkYellow hover:bg-pastelPink dark:hover:bg-darkPink text-white px-6 py-2 rounded-full font-medium">
+                        My Achievements
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- About Me Page -->
+        <div id="about" class="page">
+            <section class="mb-6">
+                <div class="flex flex-col md:flex-row items-center gap-8 mb-8">
+                    <div class="md:w-1/3 flex justify-center">
+                        <img src="prof.jpg" 
+                             alt="Profile Picture" 
+                             class="profile-pic w-64 h-64 object-cover border-pastelPurple dark:border-darkPurple shadow-lg">
+                    </div>
+                    <div class="md:w-2/3">
+                        <h1 class="text-4xl font-bold font-comic text-pastelPurple dark:text-darkPurple mb-4">About Me 🍡</h1>
+                        <p class="text-lg mb-4">
+                            Hello! I’m Ranella Mae Populi, a 3rd-year BSIT student at STI College Batangas with a passion for creating cute and functional digital experiences. 
+                            I believe technology should be both useful and delightful, which is why I love creating cute, coquettish, and girly designs.
+                        </p>
+                        <p class="text-lg mb-4">
+                            When I’m not coding, you’ll find me watching movies, napping, or trying out new recipes. 
+                            I’m also an avid collector of plushies—especially Kuromi—and stationery.
+                            My desk is always filled with colored pens and adorable sticky notes!
+                        </p>
+                        <p class="text-lg">
+                            My goal is to combine technical skills with my love for cute design to create digital products that bring joy to everyday life. 
+                            I’m especially interested in UI/UX design and front-end development.
+                        </p>
+                    </div>
+                </div>
+                
+                <h2 class="text-3xl font-bold font-comic text-pastelYellow dark:text-darkYellow mb-6 text-center">My Gallery</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="gallery-img overflow-hidden rounded-xl">
+                        <img src="1.jpg" 
+                             alt="Picture" class="w-full aspect-square object-cover hover:scale-105 transition-transform">
+                    </div>
+                    <div class="gallery-img overflow-hidden rounded-xl">
+                        <img src="2.jpg" 
+                             alt="Picture" class="w-full aspect-square object-cover hover:scale-105 transition-transform">
+                    </div>
+                    <div class="gallery-img overflow-hidden rounded-xl">
+                        <img src="3.jpg" 
+                             alt="Picture" class="w-full aspect-square object-cover hover:scale-105 transition-transform">
+                    </div>
+                    <div class="gallery-img overflow-hidden rounded-xl">
+                        <img src="4.jpg" 
+                             alt="Picture" class="w-full aspect-square object-cover hover:scale-105 transition-transform">
+                    </div>
+                    <div class="gallery-img overflow-hidden rounded-xl">
+                        <img src="5.jpg" 
+                             alt="Picture" class="w-full aspect-square object-cover hover:scale-105 transition-transform">
+                    </div>
+                    <div class="gallery-img overflow-hidden rounded-xl">
+                        <img src="6.jpg" 
+                             alt="Picture" class="w-full aspect-square object-cover hover:scale-105 transition-transform">
+                    </div>
+                    <div class="gallery-img overflow-hidden rounded-xl">
+                        <img src="7.jpg" 
+                             alt="Picture" class="w-full aspect-square object-cover hover:scale-105 transition-transform">
+                    </div>
+                    <div class="gallery-img overflow-hidden rounded-xl">
+                        <img src="8.jpg" 
+                             alt="Picture" class="w-full aspect-square object-cover hover:scale-105 transition-transform">
+                    </div>
+                </div>
+            </section>
+            
+            <div class="text-center mt-8">
+                <button onclick="showPage('home')" class="kawaii-btn bg-pastelPink dark:bg-darkPink hover:bg-pastelPurple dark:hover:bg-darkPurple text-white px-6 py-2 rounded-full font-medium">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+
+        <!-- Skills Page -->
+        <div id="skills" class="page">
+            <section class="mb-12">
+                <h1 class="text-4xl font-bold font-comic text-pastelBlue dark:text-darkBlue mb-8 text-center">My Skills 🎯</h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <h2 class="text-2xl font-semibold mb-4 text-pastelPurple dark:text-darkPurple">Technical Skills</h2>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>UI/UX Design</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="skill-bar bg-gray-200 dark:bg-gray-700 rounded-full">
+                                <div class="skill-progress bg-pastelBlue dark:bg-darkBlue" style="width: 85%"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>HTML/CSS</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="skill-bar bg-gray-200 dark:bg-gray-700 rounded-full">
+                                <div class="skill-progress bg-pastelPink dark:bg-darkPink" style="width: 90%"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>Android Studio</span>
+                                <span>75%</span>
+                            </div>
+                            <div class="skill-bar bg-gray-200 dark:bg-gray-700 rounded-full">
+                                <div class="skill-progress bg-pastelYellow dark:bg-darkYellow" style="width: 70%"></div>
+                            </div>
+                        </div>    
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>JavaScript</span>
+                                <span>70%</span>
+                            </div>
+                            <div class="skill-bar bg-gray-200 dark:bg-gray-700 rounded-full">
+                                <div class="skill-progress bg-pastelPurple dark:bg-darkPurple" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span>Database Management</span>
+                                <span>68%</span>
+                            </div>
+                            <div class="skill-bar bg-gray-200 dark:bg-gray-700 rounded-full">
+                                <div class="skill-progress bg-pastelGreen dark:bg-darkGreen" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <h2 class="text-2xl font-semibold mb-4 text-pastelPink dark:text-darkPink">Creative Talents</h2>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-lg font-medium mb-2 flex items-center">
+                                <i class="fas fa-shirt text-pastelPurple dark:text-darkPurple mr-2"></i>
+                                Fashion Styling
+                            </h3>
+                            <p class="text-gray-700 dark:text-gray-300">
+                               I design personalized looks by mixing fun trends, sweet colors, and soft textures to bring out your unique style. My approach matches my happy, playful mood to create outfits that’re super cute, cozy, and full of sparkle.
+                            </p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-lg font-medium mb-2 flex items-center">
+                                <i class="fas fa-cookie-bite text-pastelYellow dark:text-darkYellow mr-2"></i>
+                                Baking & Cooking
+                            </h3>
+                            <p class="text-gray-700 dark:text-gray-300">
+                               I love making sweet treats and trying out new recipes in the kitchen. My creations are often inspired by cute aesthetics—think pastel cupcakes, heart-shaped cookies, and cozy comfort food.
+                            </p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-lg font-medium mb-2 flex items-center">
+                                <i class="fas fa-pen-fancy text-pastelBlue dark:text-darkBlue mr-2"></i>
+                                Hand Lettering & Calligraphy
+                            </h3>
+                            <p class="text-gray-700 dark:text-gray-300">
+                                I make super cute and pretty letters by hand, mixing sweet calligraphy styles with fun, playful touches! Every letter is like a little piece of art full of charm and happy vibes
+                            </p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-lg font-medium mb-2 flex items-center">
+                                <i class="fas fa-heart text-pastelGreen dark:text-darkGreen mr-2"></i>
+                                Stationery Design
+                            </h3>
+                            <p class="text-gray-700 dark:text-gray-300">
+                                I create adorable stationery filled with pastel colors, cute characters, and playful patterns. Every design is made to brighten your day and make writing, planning, and doodling extra fun and magical.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl mb-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-center text-pastelPurple dark:text-darkPurple">Tools I Use</h2>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-pastelPink dark:bg-darkPink rounded-full flex items-center justify-center mb-2">
+                                <i class="fab fa-figma text-white text-2xl"></i>
+                            </div>
+                            <span>Figma</span>
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-pastelGreen dark:bg-darkGreen rounded-full flex items-center justify-center mb-2">
+                                <i class="fab fa-c text-white text-2xl"></i>
+                            </div>
+                            <span>Canva</span>
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-pastelYellow dark:bg-darkYellow rounded-full flex items-center justify-center mb-2">
+                                <i class="fab fa-js text-white text-2xl"></i>
+                            </div>
+                            <span>JavaScript</span>
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-pastelGreen dark:bg-darkGreen rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-laptop text-white text-2xl"></i>
+                            </div>
+                            <span>Android Studio</span>
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-pastelPink dark:bg-darkPink rounded-full flex items-center justify-center mb-2">
+                                <i class="fab fa-github-alt text-white text-2xl"></i>
+                            </div>
+                            <span>Github</span>
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-pastelYellow dark:bg-darkYellow rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-laptop text-white text-2xl"></i>
+                            </div>
+                            <span>VS Code</span>
+                        </div>                        
+
+                    </div>
+                </div>
+            </section>
+            
+            <div class="text-center">
+                <button onclick="showPage('home')" class="kawaii-btn bg-pastelBlue dark:bg-darkBlue hover:bg-pastelGreen dark:hover:bg-darkGreen text-white px-6 py-2 rounded-full font-medium">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+
+        <!-- Achievements Page -->
+        <div id="achievements" class="page">
+            <section class="mb-12">
+                <h1 class="text-4xl font-bold font-comic text-pastelYellow dark:text-darkYellow mb-8 text-center">My Achievements 🏆</h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-pastelPink dark:bg-darkPink text-white p-3 rounded-full mr-4">
+                                <i class="fas fa-users text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold text-pastelPurple dark:text-darkPurple">CODE President</h2>
+                                <p class="text-gray-600 dark:text-gray-400">Academic Year 2024-2025</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300">
+                           Served as President of The Community of Data Engineers (CODE) for Academic Year 2024–2025, leading initiatives that promoted academic excellence, technological innovation, and student engagement within the BSIT community.
+                           Successfully organized events, and collaborative projects that enhanced the organization’s impact and visibility.
+                        </p>
+                        <div class="mt-4">
+                            <img src="code.jpg" 
+                                 alt="Award" class="w-full h-48 object-cover rounded-lg">
+                        </div>
+                    </div>
+                    
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-pastelPurple dark:bg-darkPurple text-white p-3 rounded-full mr-4">
+                                <i class="fas fa-code text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold text-pastelBlue dark:text-darkBlue">Community Outreach Project Asst. Leader</h2>
+                                <p class="text-gray-600 dark:text-gray-400">Sagip Buhay Tahanan Foundation, 2024</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300">
+                            Assisted in planning, organizing, and executing outreach activities aimed at providing support and uplifting the lives of the beneficiaries,
+                            while promoting social responsibility and community engagement among student volunteers.
+                        </p>
+                        <div class="mt-4">
+                            <img src="outreach.jpg" 
+                                 alt="Outreach Program" class="w-full h-48 object-cover rounded-lg">
+                        </div>
+                    </div>
+                    
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-pastelBlue dark:bg-darkBlue text-white p-3 rounded-full mr-4">
+                                <i class="fas fa-medal text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold text-pastelYellow dark:text-darkYellow">Loyalty Awardeee</h2>
+                                <p class="text-gray-600 dark:text-gray-400">1st Gawad Parangal 2024</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300">
+                            Recognized as a Loyalty Awardee during the 1st Gawad Parangal 2024, honoring consistent dedication, active participation, and long-term commitment to CODE's academic and extracurricular excellence throughout the years of study.
+                        </p>
+                        <div class="mt-4">
+                            <img src="gawad.jpg" 
+                                 alt="Award" class="w-full h-48 object-cover rounded-lg">
+                        </div>
+                    </div>
+                    
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-pastelYellow dark:bg-darkYellow text-white p-3 rounded-full mr-4">
+                                <i class="fas fa-brain text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold text-pastelGreen dark:text-darkGreen">Second Place in Think Quest </h2>
+                                <p class="text-gray-600 dark:text-gray-400">Think Quest – Tagisan ng Talino 2023</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300">
+                            Awarded Second Place in Think Quest – Tagisan ng Talino 2023, a prestigious academic competition that challenged participants’ critical thinking, problem-solving skills, and knowledge in different aspects.
+                            Demonstrated strong teamwork and technical abilities while competing against talented peers from various institutions.
+                        </p>
+                        <div class="mt-4">
+                            <img src="tagisan ng talino.jpg" 
+                                 alt="Award" class="w-full h-48 object-cover rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl mb-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-center text-pastelPink dark:text-darkPink">Other Recognitions</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center p-3 bg-pastelPink/20 dark:bg-darkPink/20 rounded-lg">
+                            <div class="bg-pastelPink dark:bg-darkPink text-white p-2 rounded-full mr-3">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">Dean’s List Honor</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Bachelor of Science in Information Technology, 2022-Present</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-pastelPurple/20 dark:bg-darkPurple/20 rounded-lg">
+                            <div class="bg-pastelPurple dark:bg-darkPurple text-white p-2 rounded-full mr-3">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">Java Fundamentals Certification</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Computer Programming, 2023</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-pastelBlue/20 dark:bg-darkBlue/20 rounded-lg">
+                            <div class="bg-pastelBlue dark:bg-darkBlue text-white p-2 rounded-full mr-3">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">Systems Administration Certification</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Systems Administration, 2023</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-pastelYellow/20 dark:bg-darkYellow/20 rounded-lg">
+                            <div class="bg-pastelYellow dark:bg-darkYellow text-white p-2 rounded-full mr-3">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">CODE Secretary</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Academic Year 2022-2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="text-center">
+                <button onclick="showPage('home')" class="kawaii-btn bg-pastelYellow dark:bg-darkYellow hover:bg-pastelPink dark:hover:bg-darkPink text-white px-6 py-2 rounded-full font-medium">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page">
+            <section class="mb-12">
+                <h1 class="text-4xl font-bold font-comic text-pastelGreen dark:text-darkGreen mb-8 text-center">Let's Chat 💌 </h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <h2 class="text-2xl font-semibold mb-4 text-pastelPink dark:text-darkPink">Send Me a Message</h2>
+                        <form id="contactForm" class="space-y-4">
+                            <div>
+                                <label for="name" class="block mb-1">Your Name</label>
+                                <input type="text" id="name" name="name" 
+                                       class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastelPurple dark:focus:ring-darkPurple bg-white dark:bg-gray-700">
+                            </div>
+                            <div>
+                                <label for="email" class="block mb-1">Email Address</label>
+                                <input type="email" id="email" name="email" 
+                                       class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastelPurple dark:focus:ring-darkPurple bg-white dark:bg-gray-700">
+                            </div>
+                            <div>
+                                <label for="subject" class="block mb-1">Subject</label>
+                                <input type="text" id="subject" name="subject" 
+                                       class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastelPurple dark:focus:ring-darkPurple bg-white dark:bg-gray-700">
+                            </div>
+                            <div>
+                                <label for="message" class="block mb-1">Message</label>
+                                <textarea id="message" name="message" rows="4" 
+                                          class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-pastelPurple dark:focus:ring-darkPurple bg-white dark:bg-gray-700"></textarea>
+                            </div>
+                            <button type="submit" class="kawaii-btn bg-pastelPurple dark:bg-darkPurple hover:bg-pastelPink dark:hover:bg-darkPink text-white px-6 py-2 rounded-full font-medium w-full">
+                                Send Message <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl">
+                        <h2 class="text-2xl font-semibold mb-4 text-pastelBlue dark:text-darkBlue">Connect With Me</h2>
+                        <p class="mb-6">
+                            Feel free to reach out through any of these platforms. I'm always happy to chat about projects, collaborations, 
+                            or just share cute art and tech tips!
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <a href="#" class="flex items-center p-3 bg-pastelPink/20 dark:bg-darkPink/20 rounded-lg hover:bg-pastelPink/30 dark:hover:bg-darkPink/30 transition-colors">
+                                <div class="bg-pastelPink dark:bg-darkPink text-white p-2 rounded-full mr-3">
+                                    <i class="fab fa-github"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">GitHub</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">@aurorararaaaa</p>
+                                </div>
+                            </a>
+                            
+                            <a href="#" class="flex items-center p-3 bg-pastelPurple/20 dark:bg-darkPurple/20 rounded-lg hover:bg-pastelPurple/30 dark:hover:bg-darkPurple/30 transition-colors">
+                                <div class="bg-pastelPurple dark:bg-darkPurple text-white p-2 rounded-full mr-3">
+                                    <i class="fab fa-facebook"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Facebook</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Ranella Populi</p>
+                                </div>
+                            </a>
+                            
+                            <a href="#" class="flex items-center p-3 bg-pastelBlue/20 dark:bg-darkBlue/20 rounded-lg hover:bg-pastelBlue/30 dark:hover:bg-darkBlue/30 transition-colors">
+                                <div class="bg-pastelBlue dark:bg-darkBlue text-white p-2 rounded-full mr-3">
+                                    <i class="fab fa-twitter"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Twitter</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">@raneylahmey</p>
+                                </div>
+                            </a>
+                            
+                            <a href="#" class="flex items-center p-3 bg-pastelYellow/20 dark:bg-darkYellow/20 rounded-lg hover:bg-pastelYellow/30 dark:hover:bg-darkYellow/30 transition-colors">
+                                <div class="bg-pastelYellow dark:bg-darkYellow text-white p-2 rounded-full mr-3">
+                                    <i class="fab fa-instagram"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Instagram</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">@raneylahmey</p>
+                                </div>
+                            </a>
+                            
+                            <a href="#" class="flex items-center p-3 bg-pastelGreen/20 dark:bg-darkGreen/20 rounded-lg hover:bg-pastelGreen/30 dark:hover:bg-darkGreen/30 transition-colors">
+                                <div class="bg-pastelGreen dark:bg-darkGreen text-white p-2 rounded-full mr-3">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Email</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">ranellamaepopuli@gmail.com</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kawaii-card bg-white dark:bg-gray-800 p-6 rounded-2xl mb-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-center text-pastelPurple dark:text-darkPurple">Frequently Asked Questions</h2>
+                    <div class="space-y-4">
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <button class="flex justify-between items-center w-full text-left font-medium text-pastelPink dark:text-darkPink">
+                                <span>What programming languages do BSIT students learn?</span>
+                                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                            </button>
+                            <div class="mt-2 text-gray-700 dark:text-gray-300 hidden">
+                                Most BSIT programs cover languages like Python, Java, C++, JavaScript, and SQL. You may also learn web development languages such as HTML and CSS.
+                            </div>
+                        </div>
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <button class="flex justify-between items-center w-full text-left font-medium text-pastelBlue dark:text-darkBlue">
+                                <span>What’s the difference between BSIT and Computer Science?</span>
+                                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                            </button>
+                            <div class="mt-2 text-gray-700 dark:text-gray-300 hidden">
+                                BSIT focuses more on applied technology and systems implementation, while Computer Science leans more toward theory, algorithms, and software development.
+                            </div>
+                        </div>
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <button class="flex justify-between items-center w-full text-left font-medium text-pastelYellow dark:text-darkYellow">
+                                <span>Is math hard in BSIT?</span>
+                                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                            </button>
+                            <div class="mt-2 text-gray-700 dark:text-gray-300 hidden">
+                                BSIT includes some math like logic, discrete math, and basic statistics, but it's usually manageable—especially with practice and problem-solving.
+                            </div>
+                        </div>
+                        <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                            <button class="flex justify-between items-center w-full text-left font-medium text-pastelGreen dark:text-darkGreen">
+                                <span>Do I need to be good at coding before entering BSIT?</span>
+                                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                            </button>
+                            <div class="mt-2 text-gray-700 dark:text-gray-300 hidden">
+                                Nope! BSIT is designed to teach you from the basics. Curiosity, willingness to learn, and practice are more important.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="text-center">
+                <button onclick="showPage('home')" class="kawaii-btn bg-pastelGreen dark:bg-darkGreen hover:bg-pastelBlue dark:hover:bg-darkBlue text-white px-6 py-2 rounded-full font-medium">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md py-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-gray-700 dark:text-gray-300">
+                        <i>&copy; 2025 Ranella Mae Populi's Portfolio. All rights reserved. </i>
+                    </p>
+                </div>
+                <div class="flex space-x-4">
+                    </a>
+                    <a href="https://www.facebook.com/ranellamaebp" class="text-gray-700 dark:text-gray-300 hover:text-pastelPurple dark:hover:text-darkPurple transition-colors">
+                        <i class="fab fa-facebook text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/raneylahmey" class="text-gray-700 dark:text-gray-300 hover:text-pastelYellow dark:hover:text-darkYellow transition-colors">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="https://x.com/raneylahmey" class="text-gray-700 dark:text-gray-300 hover:text-pastelBlue dark:hover:text-darkBlue transition-colors">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        const savedTheme = localStorage.getItem('theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        if (savedTheme === 'dark') {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            
+            document.getElementById(pageId).classList.add('active-page');
+            
+            mobileMenu.classList.add('hidden');
+            
+            window.scrollTo(0, 0);
+        }
+        
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            alert(`Thank you for your message, ${name}! I'll get back to you soon at ${email}.`);
+            
+            contactForm.reset();
+        });
+        
+        const faqButtons = document.querySelectorAll('.kawaii-card button');
+        
+        faqButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const answer = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                answer.classList.toggle('hidden');
+                
+                if (answer.classList.contains('hidden')) {
+                    icon.classList.remove('rotate-180');
+                } else {
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+        
+        function animateSkillBars() {
+            const skillBars = document.querySelectorAll('.skill-progress');
+            skillBars.forEach(bar => {
+                bar.style.width = '0';
+                
+                const targetWidth = bar.parentElement.previousElementSibling.querySelector('span:last-child').textContent;
+                
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 100);
+            });
+        }
+        
+        const skillsPage = document.getElementById('skills');
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                if (mutation.attributeName === 'class') {
+                    if (skillsPage.classList.contains('active-page')) {
+                        animateSkillBars();
+                    }
+                }
+            });
+        });
+        
+        observer.observe(skillsPage, {
+            attributes: true
+        });
+    </script>
+</body>
+</html>
